@@ -3,8 +3,10 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import InterpolateHtmlPlugin from "interpolate-html-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import TerserPlugin from "terser-webpack-plugin";
+import { Configuration as WebpackConfiguration } from "webpack";
+import { Configuration as DevServerConfiguration } from "webpack-dev-server";
 
-const config = {
+const config: WebpackConfiguration & { devServer?: DevServerConfiguration } = {
   mode: "development",
   entry: "./src/index.tsx",
   devtool: "source-map",
@@ -13,7 +15,14 @@ const config = {
     path: resolve(__dirname, "dist"),
     publicPath: "/",
   },
-  devServer: {},
+  devServer: {
+    proxy: {
+      "/opdracht": {
+        target: "https://download.oberon.nl",
+        changeOrigin: true,
+      },
+    },
+  },
   optimization: {
     splitChunks: {
       chunks: "all",
