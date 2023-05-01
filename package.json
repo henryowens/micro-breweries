@@ -17,8 +17,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "webpack-dev-server --open --mode development --hot",
+    "build": "webpack --mode production",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -41,6 +41,12 @@
     ]
   },
   "devDependencies": {
-    "sass": "^1.62.1"
+    "html-webpack-plugin": "^5.5.1",
+    "interpolate-html-plugin": "^4.0.0",
+    "sass": "^1.62.1",
+    "ts-loader": "^9.4.2",
+    "webpack": "^5.81.0",
+    "webpack-cli": "^5.0.2",
+    "webpack-dev-server": "^4.13.3"
   }
 }
