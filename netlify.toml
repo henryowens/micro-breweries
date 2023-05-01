@@ -1,9 +1,8 @@
 [[redirects]]
-  from = "/opdracht"
-  to = "https://download.oberon.nl"
-  status = 200
   force = true
-  headers = {X-From = "Netlify"}
+  from = "/opdracht/*"
+  status = 200
+  to = "https://download.oberon.nl"
 
 [[redirects]]
   from = "/*"
