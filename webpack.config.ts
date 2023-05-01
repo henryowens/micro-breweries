@@ -1,16 +1,35 @@
-import { join } from "path";
+import { resolve } from "path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import InterpolateHtmlPlugin from "interpolate-html-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import TerserPlugin from "terser-webpack-plugin";
 
 const config = {
   mode: "development",
   entry: "./src/index.tsx",
-  devtool: "inline-source-map",
+  devtool: "source-map",
   output: {
-    path: join(__dirname, "/dist"),
-    filename: "bundle.js",
+    filename: "[name].[contenthash].js",
+    path: resolve(__dirname, "dist"),
+    publicPath: "/",
   },
   devServer: {},
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+    },
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
+        extractComments: false,
+      }),
+    ],
+  },
   module: {
     rules: [
       {
@@ -20,7 +39,17 @@ const config = {
       },
       {
         test: /\.scss$/,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: "css-loader",
+            options: {
+              importLoaders: 2,
+              modules: true,
+            },
+          },
+          "sass-loader",
+        ],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif|ico)$/,
@@ -38,6 +67,9 @@ const config = {
     }),
     new InterpolateHtmlPlugin({
       PUBLIC_URL: "",
+    }),
+    new MiniCssExtractPlugin({
+      filename: "styles.css",
     }),
   ],
 };
