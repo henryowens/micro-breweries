@@ -36,7 +36,6 @@ const App = () => {
 
     setClosestLocations(sortedLocations);
   }, [currentLocation, data]);
-  console.log("closestLocations", closestLocations);
 
   const handleRequestLocation = () => {
     updateLoadingLocation(true);
