@@ -7,7 +7,8 @@ import {
   Container,
   Link,
 } from "@chakra-ui/react";
-import { Brewery } from "../api/breweries/models";
+import { Brewery } from "../../api/breweries/models";
+import cardStyles from "..//styles/breweryCard";
 
 interface BreweryCardProps extends Brewery {
   isOpen: boolean;
@@ -20,13 +21,8 @@ const BreweryCard: React.FC<BreweryCardProps> = ({
   isOpen,
   address,
 }) => (
-  <Card width={300} borderColor="whitesmoke" borderWidth={1}>
-    <CardHeader
-      flex={1}
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-between"
-    >
+  <Card width={300} borderColor="whitesmoke" css={cardStyles.card}>
+    <CardHeader css={cardStyles.header}>
       <Heading as="h2" fontSize="2xl">
         {name}
       </Heading>
@@ -34,12 +30,7 @@ const BreweryCard: React.FC<BreweryCardProps> = ({
         {city}, {zipcode}
       </Text>
     </CardHeader>
-    <CardBody
-      flex="inherit"
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-    >
+    <CardBody css={cardStyles.body}>
       <Container
         bgColor={isOpen ? "green.200" : "red.200"}
         width="fit-content"

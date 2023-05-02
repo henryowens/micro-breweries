@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import DefaultLayout from "./layouts/Default";
 
-const HomeRoute = lazy(() => import("./routes/Home"));
+const HomeRoute = lazy(() => import("./routes/ui/Home"));
 const router = createBrowserRouter([
   {
     path: "/",

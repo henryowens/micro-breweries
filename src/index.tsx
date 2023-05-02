@@ -4,7 +4,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 
-import "./index.scss";
 import reportWebVitals from "./reportWebVitals";
 import router from "./router/Index";
 import theme from "./style/theme";

@@ -1,5 +1,4 @@
 import {
-  Button,
   Text,
   Flex,
   Switch,
@@ -10,10 +9,15 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-import { breweriesService } from "../../api";
-import { Brewery, DaysOfTheWeek } from "../../api/breweries/models";
-import { BreweryCard, LocationButton, PostcodeFilter } from "../../components";
-import calculateDistance from "../../helpers/calulateDistance";
+import { breweriesService } from "../../../api";
+import { Brewery, DaysOfTheWeek } from "../../../api/breweries/models";
+import {
+  BreweryCard,
+  LocationButton,
+  PostcodeFilter,
+} from "../../../components";
+import calculateDistance from "../../../helpers/calulateDistance";
+import homeStyles from "../styles/home";
 
 const dayOfTheWeekMap: Record<number, DaysOfTheWeek> = {
   1: "Monday",
@@ -71,25 +75,22 @@ const HomeRoute = () => {
         <PostcodeFilter onUpdate={(location) => setCurrentLocation(location)} />
         <Divider
           orientation="vertical"
-          borderLeftWidth="1px"
-          height="inherit"
           borderColor="whitesmoke.600"
+          css={homeStyles.divider}
         />
         <LocationButton onUpdate={(location) => setCurrentLocation(location)}>
           Use Location
         </LocationButton>
         <Divider
           orientation="vertical"
-          borderLeftWidth="1px"
-          height="inherit"
           borderColor="whitesmoke.600"
+          css={homeStyles.divider}
         />
         <FormControl
           as={Flex}
           gap={2}
           alignItems="center"
-          width="auto"
-          height="fit-content"
+          css={homeStyles.toggleContainer}
         >
           <FormLabel htmlFor="IsOpenSwitch" margin="0">
             Open:

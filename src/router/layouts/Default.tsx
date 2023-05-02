@@ -4,7 +4,7 @@ import { PropsWithChildren } from "react";
 const DefaultLayout = ({ children }: PropsWithChildren) => (
   <div className="default-layout">
     <Flex alignItems="center" gap={2} paddingBottom={7}>
-      <Image src="/logo.png" width="40px" height="40px" />
+      <Image src="/logo.png" width="40px" height="40px" alt="Logo for site" />
       <Text color="gray" fontWeight="bold">
         MICRO BREWERIES
       </Text>

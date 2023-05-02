@@ -1,6 +1,16 @@
-import { extendTheme } from "@chakra-ui/react";
+import { extendTheme, StyleFunctionProps } from "@chakra-ui/react";
 
 const theme = extendTheme({
+  styles: {
+    global: (props: StyleFunctionProps) => ({
+      body: {
+        margin: 0,
+        "-webkit-font-smoothing": "antialiased",
+        "-moz-osx-font-smoothing": "grayscale",
+        padding: "25px 15px",
+      },
+    }),
+  },
   colors: {
     primary: { 500: "#4062BB" },
     secondary: { 500: "#52489C" },

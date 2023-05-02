@@ -8,7 +8,8 @@ import {
 } from "@chakra-ui/react";
 import { FormEvent, useState } from "react";
 
-import { postcodesService } from "../api";
+import { postcodesService } from "../../api";
+import postcodeFilterStyles from "../styles/postcodeFilter";
 
 interface PostcodeFilterProps {
   onUpdate?: (location: { latitude: number; longitude: number }) => void;
@@ -64,11 +65,7 @@ const PostcodeFilter = ({ onUpdate }: PostcodeFilterProps) => {
         {!!error ? (
           <FormErrorMessage>{error}</FormErrorMessage>
         ) : (
-          <FormHelperText
-            style={{
-              minHeight: "1em",
-            }}
-          ></FormHelperText>
+          <FormHelperText css={postcodeFilterStyles.error}></FormHelperText>
         )}
       </FormControl>
     </form>
