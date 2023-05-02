@@ -10,10 +10,10 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-import { breweriesService } from "./api";
-import { Brewery, DaysOfTheWeek } from "./api/breweries/models";
-import { BreweryCard } from "./components";
-import calculateDistance from "./helpers/calulateDistance";
+import { breweriesService } from "../../api";
+import { Brewery, DaysOfTheWeek } from "../../api/breweries/models";
+import { BreweryCard } from "../../components";
+import calculateDistance from "../../helpers/calulateDistance";
 
 const dayOfTheWeekMap: Record<number, DaysOfTheWeek> = {
   1: "Monday",
@@ -25,7 +25,7 @@ const dayOfTheWeekMap: Record<number, DaysOfTheWeek> = {
   7: "Sunday",
 };
 
-const App = () => {
+const HomeRoute = () => {
   const [isOpenFilter, updateIsOpenFilter] = useState(false);
 
   const [currentLocation, setCurrentLocation] = useState({
@@ -80,18 +80,16 @@ const App = () => {
 
   return (
     <div className="app">
-      <Heading as="h1" noOfLines={1}>
-        Micro Breweries Search
-      </Heading>
       <Text>Search Breweries in your local area</Text>
 
       <Flex gap={3} margin="15px 0">
         <Button
           colorScheme="primary"
+          size="sm"
           disabled={loadingLocation}
           onClick={handleRequestLocation}
         >
-          Use Current Location
+          Use Location
         </Button>
 
         <FormControl as={Flex} gap={2} alignItems="center">
@@ -121,4 +119,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default HomeRoute;

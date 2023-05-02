@@ -1,13 +1,14 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import React, { lazy, Suspense } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
 
 import "./index.scss";
 import reportWebVitals from "./reportWebVitals";
+import router from "./router/Index";
 import theme from "./style/theme";
 
-const App = lazy(() => import("./App"));
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -16,9 +17,7 @@ export default root.render(
   <React.StrictMode>
     <QueryClientProvider client={new QueryClient()}>
       <ChakraProvider theme={{ ...theme }}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <App />
-        </Suspense>
+        <RouterProvider router={router} />
       </ChakraProvider>
     </QueryClientProvider>
   </React.StrictMode>
