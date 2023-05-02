@@ -1,13 +1,33 @@
-import { Button, Heading, Text, Flex } from "@chakra-ui/react";
+import {
+  Button,
+  Heading,
+  Text,
+  Flex,
+  Switch,
+  FormControl,
+  FormLabel,
+} from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 import { breweriesService } from "./api";
-import { Brewery } from "./api/breweries/models";
+import { Brewery, DaysOfTheWeek } from "./api/breweries/models";
 import { BreweryCard } from "./components";
 import calculateDistance from "./helpers/calulateDistance";
 
+const dayOfTheWeekMap: Record<number, DaysOfTheWeek> = {
+  1: "Monday",
+  2: "Tuesday",
+  3: "Wednesday",
+  4: "Thursday",
+  5: "Friday",
+  6: "Saturday",
+  7: "Sunday",
+};
+
 const App = () => {
+  const [isOpenFilter, updateIsOpenFilter] = useState(false);
+
   const [currentLocation, setCurrentLocation] = useState({
     latitude: 0,
     longitude: 0,
@@ -19,7 +39,7 @@ const App = () => {
   );
 
   useEffect(() => {
-    const sortedLocations = [...(data?.data.breweries || [])].sort(
+    let sortedLocations = [...(data?.data.breweries || [])].sort(
       (loc1, loc2) => {
         // Calculate the distances from the current location to each location
         const distance1 = calculateDistance(currentLocation, {
@@ -36,8 +56,13 @@ const App = () => {
       }
     );
 
+    if (isOpenFilter)
+      sortedLocations = sortedLocations.filter(({ open }) =>
+        open.includes(dayOfTheWeekMap[new Date().getDay()])
+      );
+
     setClosestLocations(sortedLocations);
-  }, [currentLocation, data]);
+  }, [currentLocation, data, isOpenFilter]);
 
   const handleRequestLocation = () => {
     updateLoadingLocation(true);
@@ -60,18 +85,36 @@ const App = () => {
       </Heading>
       <Text>Search Breweries in your local area</Text>
 
-      <Button
-        colorScheme="primary"
-        disabled={loadingLocation}
-        onClick={handleRequestLocation}
-        margin="25px 0"
-      >
-        Use Current Location
-      </Button>
+      <Flex gap={3} margin="15px 0">
+        <Button
+          colorScheme="primary"
+          disabled={loadingLocation}
+          onClick={handleRequestLocation}
+        >
+          Use Current Location
+        </Button>
+
+        <FormControl as={Flex} gap={2} alignItems="center">
+          <FormLabel htmlFor="isOpen" margin="0">
+            Open:
+          </FormLabel>
+          <Switch
+            onChange={() => updateIsOpenFilter(!isOpenFilter)}
+            id="isOpen"
+            size="md"
+            colorScheme="green"
+            placeholder="Open"
+          />
+        </FormControl>
+      </Flex>
 
       <Flex flexWrap="wrap" justifyContent="center" gap={50}>
         {closestLocations.map((brewery, i) => (
-          <BreweryCard {...brewery} key={i} />
+          <BreweryCard
+            isOpen={brewery.open.includes(dayOfTheWeekMap[new Date().getDay()])}
+            {...brewery}
+            key={i}
+          />
         ))}
       </Flex>
     </div>
