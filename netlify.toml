@@ -6,7 +6,7 @@
   
 [[redirects]]
   from = "/api/postcodes/*"
-  to = "https://json.api-postcode.nl/:splat"
+  to = "https://json.api-postcode.nl"
   status = 200
   force = true
   
