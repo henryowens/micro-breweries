@@ -26,13 +26,13 @@ const BreweryCard: React.FC<BreweryCardProps> = ({
       <Heading as="h2" fontSize="2xl">
         {name}
       </Heading>
-      <Text color="gray.500" fontSize="xs" fontWeight="bold" marginTop={2}>
+      <Text color="gray.700" fontSize="xs" fontWeight="bold" marginTop={2}>
         {city}, {zipcode}
       </Text>
     </CardHeader>
     <CardBody css={cardStyles.body}>
       <Container
-        bgColor={isOpen ? "green.200" : "red.200"}
+        bgColor={isOpen ? "green.100" : "red.200"}
         width="fit-content"
         margin={0}
         paddingLeft="4"

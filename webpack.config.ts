@@ -3,7 +3,6 @@ import CopyWebpackPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import InterpolateHtmlPlugin from "interpolate-html-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import TerserPlugin from "terser-webpack-plugin";
 import { Configuration as WebpackConfiguration, optimize } from "webpack";
 import { Configuration as DevServerConfiguration } from "webpack-dev-server";
 
@@ -14,7 +13,7 @@ const config: WebpackConfiguration & { devServer?: DevServerConfiguration } = {
   output: {
     filename: "[name].[contenthash].js",
     path: resolve(__dirname, "dist"),
-    publicPath: "./",
+    publicPath: "/",
     chunkFilename: "[id].[chunkhash].js",
   },
   devServer: {
