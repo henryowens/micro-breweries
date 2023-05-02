@@ -2,9 +2,10 @@ import { extendTheme, StyleFunctionProps } from "@chakra-ui/react";
 
 const theme = extendTheme({
   styles: {
-    global: (props: StyleFunctionProps) => ({
+    global: () => ({
       body: {
         margin: 0,
+        minHeight: "100vh",
         "-webkit-font-smoothing": "antialiased",
         "-moz-osx-font-smoothing": "grayscale",
         padding: "25px 15px",

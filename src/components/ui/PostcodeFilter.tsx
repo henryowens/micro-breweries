@@ -13,15 +13,24 @@ import postcodeFilterStyles from "../styles/postcodeFilter";
 
 interface PostcodeFilterProps {
   onUpdate?: (location: { latitude: number; longitude: number }) => void;
+  onLoadingUpdate?: (loading: boolean) => void;
 }
 
-const PostcodeFilter = ({ onUpdate }: PostcodeFilterProps) => {
+const PostcodeFilter: React.FC<PostcodeFilterProps> = ({
+  onUpdate,
+  onLoadingUpdate,
+}) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
 
+  const updateLoading = (isLoading: boolean) => {
+    onLoadingUpdate && onLoadingUpdate(isLoading);
+    setLoading(isLoading);
+  };
+
   const handlePostCodeSumbit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
+    updateLoading(true);
     postcodesService
       .getByPostcode((e.target as any)[0].value as string)
       .then(({ data }) => {
@@ -44,7 +53,7 @@ const PostcodeFilter = ({ onUpdate }: PostcodeFilterProps) => {
         console.error(e);
         setError("Postcode not found");
       })
-      .finally(() => setLoading(false));
+      .finally(() => updateLoading(false));
   };
 
   return (

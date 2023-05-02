@@ -4,18 +4,27 @@ import { useState } from "react";
 interface LocationButtonProps {
   children: string;
   onUpdate?: (location: { latitude: number; longitude: number }) => void;
+  onLoadingUpdate?: (loading: boolean) => void;
 }
 
-const LocationButton = ({ children, onUpdate }: LocationButtonProps) => {
+const LocationButton: React.FC<LocationButtonProps> = ({
+  children,
+  onUpdate,
+  onLoadingUpdate,
+}) => {
   const [loading, setLoading] = useState(false);
+  const updateLoading = (isLoading: boolean) => {
+    onLoadingUpdate && onLoadingUpdate(isLoading);
+    setLoading(isLoading);
+  };
   const handleRequestLocation = () => {
-    setLoading(true);
+    updateLoading(true);
     navigator.geolocation.getCurrentPosition(
       ({ coords: { latitude, longitude } }) => {
         onUpdate && onUpdate({ latitude, longitude });
-        setLoading(false);
+        updateLoading(false);
       },
-      () => setLoading(false)
+      () => updateLoading(false)
     );
   };
   return (

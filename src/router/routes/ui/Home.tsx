@@ -5,6 +5,7 @@ import {
   FormControl,
   FormLabel,
   Divider,
+  Fade,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -13,6 +14,7 @@ import { breweriesService } from "../../../api";
 import { Brewery, DaysOfTheWeek } from "../../../api/breweries/models";
 import {
   BreweryCard,
+  FullSpinner,
   LocationButton,
   PostcodeFilter,
 } from "../../../components";
@@ -35,6 +37,8 @@ const HomeRoute = () => {
     latitude: 0,
     longitude: 0,
   });
+  const [loadingPostcode, setLoadingPostcode] = useState(false);
+  const [loadingLocation, setLoadingLocation] = useState(false);
   const [closestLocations, setClosestLocations] = useState<Brewery[]>([]);
   const { data, error, isLoading } = useQuery(["breweries"], () =>
     breweriesService.getAll()
@@ -65,20 +69,29 @@ const HomeRoute = () => {
     setClosestLocations(sortedLocations);
   }, [currentLocation, data, isOpenFilter]);
 
-  if (error) return <p>There was an error rendering the page</p>;
-  if (isLoading) return <p>Loading...</p>;
+  if (error)
+    return <Text color="red.500">There was an error rendering the page</Text>;
+  <Fade in={isLoading}>
+    <FullSpinner />;
+  </Fade>;
 
   return (
-    <div className="app">
+    <Flex flexDirection="column" flex={1}>
       <Text>Search Breweries in your local area</Text>
       <Flex gap={3} marginTop="5" marginBottom="5" align-items="baseline">
-        <PostcodeFilter onUpdate={(location) => setCurrentLocation(location)} />
+        <PostcodeFilter
+          onUpdate={(location) => setCurrentLocation(location)}
+          onLoadingUpdate={(loading) => setLoadingPostcode(loading)}
+        />
         <Divider
           orientation="vertical"
           borderColor="whitesmoke.600"
           css={homeStyles.divider}
         />
-        <LocationButton onUpdate={(location) => setCurrentLocation(location)}>
+        <LocationButton
+          onUpdate={(location) => setCurrentLocation(location)}
+          onLoadingUpdate={(loading) => setLoadingLocation(loading)}
+        >
           Use Location
         </LocationButton>
         <Divider
@@ -104,17 +117,22 @@ const HomeRoute = () => {
           />
         </FormControl>
       </Flex>
-
-      <Flex flexWrap="wrap" justifyContent="center" gap={50}>
-        {closestLocations.map((brewery, i) => (
-          <BreweryCard
-            isOpen={brewery.open.includes(dayOfTheWeekMap[new Date().getDay()])}
-            {...brewery}
-            key={i}
-          />
-        ))}
-      </Flex>
-    </div>
+      {loadingLocation || loadingPostcode ? (
+        <FullSpinner />
+      ) : (
+        <Flex flexWrap="wrap" justifyContent="center" gap={50}>
+          {closestLocations.map((brewery, i) => (
+            <BreweryCard
+              isOpen={brewery.open.includes(
+                dayOfTheWeekMap[new Date().getDay()]
+              )}
+              {...brewery}
+              key={i}
+            />
+          ))}
+        </Flex>
+      )}
+    </Flex>
   );
 };
 
