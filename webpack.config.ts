@@ -89,17 +89,17 @@ const config: WebpackConfiguration & { devServer?: DevServerConfiguration } = {
   resolve: { extensions: [".tsx", ".ts", ".js"] },
   plugins: [
     new optimize.SplitChunksPlugin(),
-    new HtmlWebpackPlugin({ template: "./public/index.html" }),
+    // new HtmlWebpackPlugin({ template: "./public/index.html" }),
     new InterpolateHtmlPlugin({ PUBLIC_URL: "" }),
     new MiniCssExtractPlugin({ filename: "styles.css" }),
-    // new CopyWebpackPlugin({
-    //   patterns: [
-    //     {
-    //       from: "public",
-    //       globOptions: { ignore: ["public/index.html"] },
-    //     },
-    //   ],
-    // }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: "public",
+          globOptions: { ignore: ["public/index.html"] },
+        },
+      ],
+    }),
   ],
 };
 
