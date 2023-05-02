@@ -13,7 +13,7 @@ const config: WebpackConfiguration & { devServer?: DevServerConfiguration } = {
   output: {
     filename: "[name].[contenthash].js",
     path: resolve(__dirname, "dist"),
-    publicPath: "/public",
+    publicPath: "/",
   },
   devServer: {
     proxy: {
