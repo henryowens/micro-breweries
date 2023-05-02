@@ -1,9 +1,10 @@
 import { resolve } from "path";
+import CopyPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import InterpolateHtmlPlugin from "interpolate-html-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import TerserPlugin from "terser-webpack-plugin";
-import { Configuration as WebpackConfiguration } from "webpack";
+import { Configuration as WebpackConfiguration, optimize } from "webpack";
 import { Configuration as DevServerConfiguration } from "webpack-dev-server";
 
 const config: WebpackConfiguration & { devServer?: DevServerConfiguration } = {
@@ -31,6 +32,36 @@ const config: WebpackConfiguration & { devServer?: DevServerConfiguration } = {
   optimization: {
     splitChunks: {
       chunks: "all",
+      minSize: 30000,
+      maxSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      automaticNameDelimiter: "~",
+
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendor",
+          chunks: "all",
+          enforce: true,
+          priority: 1,
+          minSize: 30000,
+        },
+        default: {
+          name: "common",
+          chunks: "all",
+          minChunks: 2,
+          priority: -1,
+          reuseExistingChunk: true,
+        },
+        fallback: {
+          maxSize: 100000,
+          minSize: 20000,
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+      },
     },
     minimize: true,
     minimizer: [
@@ -76,6 +107,7 @@ const config: WebpackConfiguration & { devServer?: DevServerConfiguration } = {
     extensions: [".tsx", ".ts", ".js"],
   },
   plugins: [
+    new optimize.SplitChunksPlugin(),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
@@ -84,6 +116,9 @@ const config: WebpackConfiguration & { devServer?: DevServerConfiguration } = {
     }),
     new MiniCssExtractPlugin({
       filename: "styles.css",
+    }),
+    new CopyPlugin({
+      patterns: [{ from: "./public/*", to: "./" }],
     }),
   ],
 };
