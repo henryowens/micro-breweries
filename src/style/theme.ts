@@ -6,7 +6,7 @@ const theme = extendTheme({
     secondary: { 500: "#52489C" },
     green: { 500: "#59C3C3", 200: "#cff8f8" },
     red: { 500: "#F45B69", 200: "#fae0e2" },
-    whitesmoke: { 500: "#EBEBEB" },
+    whitesmoke: { 500: "#EBEBEB", 600: "#d6cbcb" },
     gray: { 500: "#787878" },
   },
   fonts: {

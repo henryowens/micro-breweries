@@ -1,11 +1,21 @@
-[[redirects]]
-  force = true
-  from = "/opdracht/*"
-  to = "https://download.oberon.nl"
-  status = 200
-  [redirect.headers]
-    x-from = "Netlify"
+# [[redirects]]
+#   from = "/api/breweries/*"
+#   to = "https://download.oberon.nl/:splat"
+#   status = 200
+#   force = true
+  
+# [[redirects]]
+#   from = "/api/postcodes/*"
+#   to = "https://json.api-postcode.nl/:splat"
+#   status = 200
+#   force = true
+  
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+[http]
+  [http.proxy]
+    "/api/breweries" = { target = "https://download.oberon.nl", path = "", changeOrigin = true, logLevel = "debug" }
+    "/api/v1/*" = { target = "https://app.zipcodebase.com", changeOrigin = true, logLevel = "debug" }

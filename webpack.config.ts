@@ -17,9 +17,16 @@ const config: WebpackConfiguration & { devServer?: DevServerConfiguration } = {
   },
   devServer: {
     proxy: {
-      "/opdracht": {
+      "/api/breweries": {
         target: "https://download.oberon.nl",
+        pathRewrite: { "/api/breweries": "" },
         changeOrigin: true,
+        logLevel: "debug",
+      },
+      "/api/v1/*": {
+        target: "https://app.zipcodebase.com",
+        changeOrigin: true,
+        logLevel: "debug",
       },
     },
   },
