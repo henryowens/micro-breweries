@@ -4,7 +4,9 @@ import {
   Card,
   CardHeader,
   CardBody,
+  CardFooter,
   Container,
+  Link,
 } from "@chakra-ui/react";
 import { Brewery, DaysOfTheWeek } from "../api/breweries/models";
 
@@ -25,6 +27,7 @@ const BreweryCard: React.FC<BreweryCardProps> = ({
   name,
   zipcode,
   open,
+  address,
 }) => {
   const isOpen = open.includes(dayOfTheWeekMap[new Date().getDay()]);
 
@@ -43,7 +46,12 @@ const BreweryCard: React.FC<BreweryCardProps> = ({
           {city}, {zipcode}
         </Text>
       </CardHeader>
-      <CardBody flex="inherit">
+      <CardBody
+        flex="inherit"
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+      >
         <Container
           bgColor={isOpen ? "green.200" : "red.200"}
           width="fit-content"
@@ -62,6 +70,12 @@ const BreweryCard: React.FC<BreweryCardProps> = ({
             {isOpen ? "Open" : "Closed"} today
           </Text>
         </Container>
+        <Link
+          href={`http://maps.google.com/?q=${address}, ${city}, ${zipcode}`}
+          target="_blank"
+        >
+          View in maps
+        </Link>
       </CardBody>
     </Card>
   );
