@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import CopyPlugin from "copy-webpack-plugin";
+import CopyWebpackPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import InterpolateHtmlPlugin from "interpolate-html-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
@@ -14,7 +14,8 @@ const config: WebpackConfiguration & { devServer?: DevServerConfiguration } = {
   output: {
     filename: "[name].[contenthash].js",
     path: resolve(__dirname, "dist"),
-    publicPath: "/",
+    publicPath: "./",
+    chunkFilename: "[id].[chunkhash].js",
   },
   devServer: {
     proxy: {
@@ -29,51 +30,33 @@ const config: WebpackConfiguration & { devServer?: DevServerConfiguration } = {
       },
     },
   },
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
+  },
   optimization: {
     splitChunks: {
-      chunks: "all",
-      minSize: 30000,
-      maxSize: 0,
+      chunks: "async",
+      minSize: 20000,
+      minRemainingSize: 0,
       minChunks: 1,
-      maxAsyncRequests: 5,
-      maxInitialRequests: 3,
-      automaticNameDelimiter: "~",
-
+      maxAsyncRequests: 30,
+      maxInitialRequests: 30,
+      enforceSizeThreshold: 50000,
       cacheGroups: {
-        vendor: {
+        defaultVendors: {
           test: /[\\/]node_modules[\\/]/,
-          name: "vendor",
-          chunks: "all",
-          enforce: true,
-          priority: 1,
-          minSize: 30000,
-        },
-        default: {
-          name: "common",
-          chunks: "all",
-          minChunks: 2,
-          priority: -1,
+          priority: -10,
           reuseExistingChunk: true,
         },
-        fallback: {
-          maxSize: 100000,
-          minSize: 20000,
+        default: {
+          minChunks: 2,
           priority: -20,
           reuseExistingChunk: true,
         },
       },
     },
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        terserOptions: {
-          format: {
-            comments: false,
-          },
-        },
-        extractComments: false,
-      }),
-    ],
   },
   module: {
     rules: [
@@ -103,23 +86,20 @@ const config: WebpackConfiguration & { devServer?: DevServerConfiguration } = {
       },
     ],
   },
-  resolve: {
-    extensions: [".tsx", ".ts", ".js"],
-  },
+  resolve: { extensions: [".tsx", ".ts", ".js"] },
   plugins: [
     new optimize.SplitChunksPlugin(),
-    new HtmlWebpackPlugin({
-      template: "./public/index.html",
-    }),
-    new InterpolateHtmlPlugin({
-      PUBLIC_URL: "",
-    }),
-    new MiniCssExtractPlugin({
-      filename: "styles.css",
-    }),
-    new CopyPlugin({
-      patterns: [{ from: "./public/*", to: "./" }],
-    }),
+    new HtmlWebpackPlugin({ template: "./public/index.html" }),
+    new InterpolateHtmlPlugin({ PUBLIC_URL: "" }),
+    new MiniCssExtractPlugin({ filename: "styles.css" }),
+    // new CopyWebpackPlugin({
+    //   patterns: [
+    //     {
+    //       from: "public",
+    //       globOptions: { ignore: ["public/index.html"] },
+    //     },
+    //   ],
+    // }),
   ],
 };
 
