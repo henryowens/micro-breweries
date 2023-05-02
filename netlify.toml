@@ -1,14 +1,14 @@
-# [[redirects]]
-#   from = "/api/breweries/*"
-#   to = "https://download.oberon.nl/:splat"
-#   status = 200
-#   force = true
+[[redirects]]
+  from = "/api/breweries/*"
+  to = "https://download.oberon.nl/:splat"
+  status = 200
+  force = true
   
-# [[redirects]]
-#   from = "/api/postcodes/*"
-#   to = "https://json.api-postcode.nl/:splat"
-#   status = 200
-#   force = true
+[[redirects]]
+  from = "/api/postcodes/*"
+  to = "https://json.api-postcode.nl/:splat"
+  status = 200
+  force = true
   
 [[redirects]]
   from = "/*"
