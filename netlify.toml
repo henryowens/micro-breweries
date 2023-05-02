@@ -1,7 +1,7 @@
 [[redirects]]
   force = true
   from = "/opdracht/*"
-  to = "https://download.oberon.nl:splat"
+  to = "https://download.oberon.nl"
   status = 200
   [redirect.headers]
     x-from = "Netlify"

@@ -1,8 +1,10 @@
+import { Button, Heading, Text, Flex } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+
 import { breweriesService } from "./api";
 import { Brewery } from "./api/breweries/models";
-import "./app.scss";
+import { BreweryCard } from "./components";
 import calculateDistance from "./helpers/calulateDistance";
 
 const App = () => {
@@ -53,23 +55,25 @@ const App = () => {
 
   return (
     <div className="app">
-      <header>Micro Breweries Search</header>
-      <p>Search Breweries in your local area</p>
+      <Heading as="h1" noOfLines={1}>
+        Micro Breweries Search
+      </Heading>
+      <Text>Search Breweries in your local area</Text>
 
-      <button disabled={loadingLocation} onClick={handleRequestLocation}>
+      <Button
+        colorScheme="primary"
+        disabled={loadingLocation}
+        onClick={handleRequestLocation}
+        margin="25px 0"
+      >
         Use Current Location
-      </button>
+      </Button>
 
-      <div>
-        {closestLocations.map(({ name, city, zipcode }) => (
-          <div>
-            <h2>{name}</h2>
-            <p>
-              {city}, {zipcode}
-            </p>
-          </div>
+      <Flex flexWrap="wrap" justifyContent="center" gap={50}>
+        {closestLocations.map((brewery, i) => (
+          <BreweryCard {...brewery} key={i} />
         ))}
-      </div>
+      </Flex>
     </div>
   );
 };

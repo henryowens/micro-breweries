@@ -1,3 +1,12 @@
+export type DaysOfTheWeek =
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday"
+  | "Sunday";
+
 export interface Brewery {
   address: string;
   city: string;
@@ -5,14 +14,7 @@ export interface Brewery {
     lat: number;
     lng: number;
   };
-  open:
-    | "Monday"
-    | "Tuesday"
-    | "Wednesday"
-    | "Thursday"
-    | "Friday"
-    | "Saturday"
-    | "Sunday";
+  open: DaysOfTheWeek[];
   name: string;
   zipcode: string;
 }
