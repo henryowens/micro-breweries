@@ -5,10 +5,9 @@
   force = true
   
 [[redirects]]
-  from = "/api/postcodes/*"
-  to = "https://json.api-postcode.nl"
+  from = "/api/v1/*"
+  to = "https://app.zipcodebase.com/:splat"
   status = 200
-  force = true
   
 [[redirects]]
   from = "/*"
