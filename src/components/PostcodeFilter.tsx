@@ -11,7 +11,7 @@ import { FormEvent, useState } from "react";
 import { postcodesService } from "../api";
 
 interface PostcodeFilterProps {
-  onUpdate: (location: { latitude: number; longitude: number }) => void;
+  onUpdate?: (location: { latitude: number; longitude: number }) => void;
 }
 
 const PostcodeFilter = ({ onUpdate }: PostcodeFilterProps) => {
@@ -33,10 +33,11 @@ const PostcodeFilter = ({ onUpdate }: PostcodeFilterProps) => {
         )
           setError("Postcode not found");
         else
-          onUpdate({
-            latitude: Number(results[0].latitude),
-            longitude: Number(results[0].longitude),
-          });
+          onUpdate &&
+            onUpdate({
+              latitude: Number(results[0].latitude),
+              longitude: Number(results[0].longitude),
+            });
       })
       .catch((e) => {
         console.error(e);
@@ -47,12 +48,7 @@ const PostcodeFilter = ({ onUpdate }: PostcodeFilterProps) => {
 
   return (
     <form onSubmit={handlePostCodeSumbit}>
-      <FormControl
-        as={Flex}
-        gap={2}
-        flexDirection="column"
-        isInvalid={!!error}
-      >
+      <FormControl as={Flex} gap={2} flexDirection="column" isInvalid={!!error}>
         <Flex gap={2}>
           <Input
             id="PostCodeInput"

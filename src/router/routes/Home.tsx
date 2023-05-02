@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 
 import { breweriesService } from "../../api";
 import { Brewery, DaysOfTheWeek } from "../../api/breweries/models";
-import { BreweryCard, PostcodeFilter } from "../../components";
+import { BreweryCard, LocationButton, PostcodeFilter } from "../../components";
 import calculateDistance from "../../helpers/calulateDistance";
 
 const dayOfTheWeekMap: Record<number, DaysOfTheWeek> = {
@@ -27,19 +27,14 @@ const dayOfTheWeekMap: Record<number, DaysOfTheWeek> = {
 
 const HomeRoute = () => {
   const [isOpenFilter, updateIsOpenFilter] = useState(false);
-
   const [currentLocation, setCurrentLocation] = useState({
     latitude: 0,
     longitude: 0,
   });
-  const [loadingLocation, updateLoadingLocation] = useState(false);
-
   const [closestLocations, setClosestLocations] = useState<Brewery[]>([]);
-
   const { data, error, isLoading } = useQuery(["breweries"], () =>
     breweriesService.getAll()
   );
-
   useEffect(() => {
     let sortedLocations = [...(data?.data.breweries || [])].sort(
       (loc1, loc2) => {
@@ -66,17 +61,6 @@ const HomeRoute = () => {
     setClosestLocations(sortedLocations);
   }, [currentLocation, data, isOpenFilter]);
 
-  const handleRequestLocation = () => {
-    updateLoadingLocation(true);
-    navigator.geolocation.getCurrentPosition(
-      ({ coords: { latitude, longitude } }) => {
-        setCurrentLocation({ latitude, longitude });
-        updateLoadingLocation(false);
-      },
-      () => updateLoadingLocation(false)
-    );
-  };
-
   if (error) return <p>There was an error rendering the page</p>;
   if (isLoading) return <p>Loading...</p>;
 
@@ -91,14 +75,9 @@ const HomeRoute = () => {
           height="inherit"
           borderColor="whitesmoke.600"
         />
-        <Button
-          colorScheme="primary"
-          size="sm"
-          disabled={loadingLocation}
-          onClick={handleRequestLocation}
-        >
+        <LocationButton onUpdate={(location) => setCurrentLocation(location)}>
           Use Location
-        </Button>
+        </LocationButton>
         <Divider
           orientation="vertical"
           borderLeftWidth="1px"
