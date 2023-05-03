@@ -5,7 +5,6 @@ import {
   FormControl,
   FormLabel,
   Divider,
-  Fade,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -19,6 +18,7 @@ import {
   PostcodeFilter,
 } from "../../../components";
 import calculateDistance from "../../../helpers/calulateDistance";
+import usePostcodeFilter from "../../../hooks/usePostcodeFilter";
 import homeStyles from "../styles/home";
 
 const dayOfTheWeekMap: Record<number, DaysOfTheWeek> = {
@@ -37,12 +37,24 @@ const HomeRoute = () => {
     latitude: 0,
     longitude: 0,
   });
-  const [loadingPostcode, setLoadingPostcode] = useState(false);
   const [loadingLocation, setLoadingLocation] = useState(false);
   const [closestLocations, setClosestLocations] = useState<Brewery[]>([]);
   const { data, error, isLoading } = useQuery(["breweries"], () =>
     breweriesService.getAll()
   );
+
+  const {
+    isLoading: isPostCodeLoading,
+    submit: onPostcodeSubmit,
+    result: postcodeResult,
+    error: postcodeError,
+    reset: onResetPostcode,
+  } = usePostcodeFilter();
+
+  useEffect(() => {
+    postcodeResult && setCurrentLocation(postcodeResult);
+  }, [postcodeResult]);
+
   useEffect(() => {
     let sortedLocations = [...(data?.data.breweries || [])].sort(
       (loc1, loc2) => {
@@ -71,17 +83,18 @@ const HomeRoute = () => {
 
   if (error)
     return <Text color="red.500">There was an error rendering the page</Text>;
-  <Fade in={isLoading}>
-    <FullSpinner />;
-  </Fade>;
+
+  if (isLoading) return <FullSpinner />;
 
   return (
     <Flex flexDirection="column" flex={1}>
       <Text>Search Breweries in your local area</Text>
       <Flex gap={3} marginTop="5" marginBottom="5" align-items="baseline">
         <PostcodeFilter
-          onUpdate={(location) => setCurrentLocation(location)}
-          onLoadingUpdate={(loading) => setLoadingPostcode(loading)}
+          error={postcodeError}
+          loading={isPostCodeLoading}
+          onReset={onResetPostcode}
+          onSubmit={onPostcodeSubmit}
         />
         <Divider
           orientation="vertical"
@@ -117,7 +130,7 @@ const HomeRoute = () => {
           />
         </FormControl>
       </Flex>
-      {loadingLocation || loadingPostcode ? (
+      {loadingLocation || isPostCodeLoading ? (
         <FullSpinner />
       ) : (
         <Flex flexWrap="wrap" justifyContent="center" gap={50}>
