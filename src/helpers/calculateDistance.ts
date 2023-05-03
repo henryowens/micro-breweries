@@ -1,4 +1,4 @@
-import { toRadians } from "./";
+import { toRadians } from ".";
 
 interface Location {
   latitude: number;

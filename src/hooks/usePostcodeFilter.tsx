@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { postcodesService } from "../api";
 
 const usePostcodeFilter = () => {
@@ -12,7 +12,6 @@ const usePostcodeFilter = () => {
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    console.log("islpoading");
     postcodesService
       .getByPostcode((e.target as any)[0].value as string)
       .then(({ data }) => {

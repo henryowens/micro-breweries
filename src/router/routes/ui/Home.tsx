@@ -5,20 +5,16 @@ import {
   FormControl,
   FormLabel,
   Divider,
+  Button,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 import { breweriesService } from "../../../api";
 import { Brewery, DaysOfTheWeek } from "../../../api/breweries/models";
-import {
-  BreweryCard,
-  FullSpinner,
-  LocationButton,
-  PostcodeFilter,
-} from "../../../components";
-import calculateDistance from "../../../helpers/calulateDistance";
-import usePostcodeFilter from "../../../hooks/usePostcodeFilter";
+import { BreweryCard, FullSpinner, PostcodeFilter } from "../../../components";
+import { calculateDistance } from "../../../helpers";
+import { useLocationFinder, usePostcodeFilter } from "../../../hooks";
 import homeStyles from "../styles/home";
 
 const dayOfTheWeekMap: Record<number, DaysOfTheWeek> = {
@@ -37,7 +33,6 @@ const HomeRoute = () => {
     latitude: 0,
     longitude: 0,
   });
-  const [loadingLocation, setLoadingLocation] = useState(false);
   const [closestLocations, setClosestLocations] = useState<Brewery[]>([]);
   const { data, error, isLoading } = useQuery(["breweries"], () =>
     breweriesService.getAll()
@@ -50,10 +45,19 @@ const HomeRoute = () => {
     error: postcodeError,
     reset: onResetPostcode,
   } = usePostcodeFilter();
+  const {
+    error: locationError,
+    submit: onLocationSubmit,
+    isLoading: isLoactionLoading,
+    result: locationResult,
+  } = useLocationFinder();
 
   useEffect(() => {
     postcodeResult && setCurrentLocation(postcodeResult);
   }, [postcodeResult]);
+  useEffect(() => {
+    locationResult && setCurrentLocation(locationResult);
+  }, [locationResult]);
 
   useEffect(() => {
     let sortedLocations = [...(data?.data.breweries || [])].sort(
@@ -101,12 +105,20 @@ const HomeRoute = () => {
           borderColor="whitesmoke.600"
           css={homeStyles.divider}
         />
-        <LocationButton
+        <Button
+          colorScheme="primary"
+          size="sm"
+          disabled={isLoactionLoading}
+          onClick={onLocationSubmit}
+        >
+          Use Location
+        </Button>
+        {/* <LocationButton
           onUpdate={(location) => setCurrentLocation(location)}
           onLoadingUpdate={(loading) => setLoadingLocation(loading)}
         >
           Use Location
-        </LocationButton>
+        </LocationButton> */}
         <Divider
           orientation="vertical"
           borderColor="whitesmoke.600"
@@ -130,7 +142,7 @@ const HomeRoute = () => {
           />
         </FormControl>
       </Flex>
-      {loadingLocation || isPostCodeLoading ? (
+      {isLoactionLoading || isPostCodeLoading ? (
         <FullSpinner />
       ) : (
         <Flex flexWrap="wrap" justifyContent="center" gap={50}>
