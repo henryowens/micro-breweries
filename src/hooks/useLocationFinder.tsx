@@ -16,7 +16,7 @@ const useLocationFinder = () => {
         setIsLoading(false);
       },
       () => {
-        setError("There was an error loading your locaiton");
+        setError("There was an issue getting your location");
         setIsLoading(false);
       }
     );

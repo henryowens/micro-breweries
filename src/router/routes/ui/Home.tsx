@@ -105,20 +105,23 @@ const HomeRoute = () => {
           borderColor="whitesmoke.600"
           css={homeStyles.divider}
         />
-        <Button
-          colorScheme="primary"
-          size="sm"
-          disabled={isLoactionLoading}
-          onClick={onLocationSubmit}
+        <Flex
+          flexDirection="column"
+          justifyContent="space-between"
+          alignItems="start"
         >
-          Use Location
-        </Button>
-        {/* <LocationButton
-          onUpdate={(location) => setCurrentLocation(location)}
-          onLoadingUpdate={(loading) => setLoadingLocation(loading)}
-        >
-          Use Location
-        </LocationButton> */}
+          <Button
+            colorScheme="primary"
+            size="sm"
+            disabled={isLoactionLoading}
+            onClick={onLocationSubmit}
+          >
+            Use Location
+          </Button>
+          <Text color="red.500" fontSize="sm" width="min-content">
+            {locationError}
+          </Text>
+        </Flex>
         <Divider
           orientation="vertical"
           borderColor="whitesmoke.600"

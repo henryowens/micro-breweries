@@ -1,2 +1,3 @@
-- Implementing loading spinner
+- Improve response design of cards
 - Add Tests
+- Improve webpack build for mobile

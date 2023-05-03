@@ -1,5 +1,6 @@
 import { resolve } from "path";
 import CopyWebpackPlugin from "copy-webpack-plugin";
+import Dotenv from "dotenv-webpack";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import InterpolateHtmlPlugin from "interpolate-html-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
@@ -87,6 +88,7 @@ const config: WebpackConfiguration & { devServer?: DevServerConfiguration } = {
   },
   resolve: { extensions: [".tsx", ".ts", ".js"] },
   plugins: [
+    new Dotenv(),
     new optimize.SplitChunksPlugin(),
     new HtmlWebpackPlugin({ template: "./public/index.html" }),
     new InterpolateHtmlPlugin({ PUBLIC_URL: "" }),
