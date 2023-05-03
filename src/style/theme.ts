@@ -15,8 +15,8 @@ const theme = extendTheme({
   colors: {
     primary: { 500: "#4062BB" },
     secondary: { 500: "#52489C" },
-    green: { 500: "#59C3C3", 200: "#cff8f8", 100: "#efffff" },
-    red: { 500: "#F45B69", 200: "#fae0e2", 100: "#fff2f3" },
+    green: { 500: "#039f9f", 200: "#cff8f8", 100: "#efffff" },
+    red: { 500: "#cc0a1c", 200: "#fae0e2", 100: "#fff2f3" },
     whitesmoke: { 500: "#EBEBEB", 600: "#d6cbcb" },
     gray: { 500: "#787878", 700: "#2e2d2d" },
   },
