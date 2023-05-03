@@ -109,6 +109,7 @@ const HomeRoute = () => {
           flexDirection="column"
           justifyContent="space-between"
           alignItems="start"
+          width="min-content"
         >
           <Button
             colorScheme="primary"
@@ -118,7 +119,7 @@ const HomeRoute = () => {
           >
             Use Location
           </Button>
-          <Text color="red.500" fontSize="sm" width="min-content">
+          <Text color="red.500" fontSize="sm">
             {locationError}
           </Text>
         </Flex>
