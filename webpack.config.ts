@@ -1,7 +1,4 @@
 import { resolve } from "path";
-import CompressionPlugin from "compression-webpack-plugin";
-import BrotliPlugin from "brotli-webpack-plugin";
-import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import InterpolateHtmlPlugin from "interpolate-html-plugin";
@@ -90,20 +87,6 @@ const config: WebpackConfiguration & { devServer?: DevServerConfiguration } = {
   },
   resolve: { extensions: [".tsx", ".ts", ".js"] },
   plugins: [
-    new CompressionPlugin({
-      filename: "[path].gz[query]",
-      algorithm: "gzip",
-      test: /\.(js|css|html|svg)$/,
-      threshold: 8192,
-      minRatio: 0.8,
-    }),
-    new BrotliPlugin({
-      asset: "[path].br[query]",
-      test: /\.(js|css|html|svg)$/,
-      threshold: 10240,
-      minRatio: 0.8,
-    }),
-    new BundleAnalyzerPlugin(),
     new optimize.SplitChunksPlugin(),
     new HtmlWebpackPlugin({ template: "./public/index.html" }),
     new InterpolateHtmlPlugin({ PUBLIC_URL: "" }),
